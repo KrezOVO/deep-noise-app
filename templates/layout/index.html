@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>噪声快速预测</title>
+        <style>
+            body{
+                background: linear-gradient(to top, rgb(20, 20, 47), rgb(118, 118, 241));
+                width: 100vw;
+                height: 100vh;
+                margin: 0;
+            }
+            .box{
+                background: white;
+                width: 80%;
+                height: 600px;
+                display: flex;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+            .left{
+                width: 35%;
+                height: 90%;
+                background-color: #fff;
+                box-sizing: border-box;
+                padding: 0 20px;
+            }
+            .right{
+                width: 65%;
+            }
+            h1{
+                text-align: center;
+                padding-top: 45px;
+                margin-top: 0;
+            }
+            .inputItem{
+                height: 44px;
+                padding: 0;
+                padding-left: 5px;
+                border: none;
+                background: none;
+                outline: none;
+                border-bottom: 3px solid black;
+                width: 100%;
+                font-size: 18px;
+                margin-top: 20px;
+            }
+            .btn{
+                background-color: #c2c2c2;
+                color: black;
+                font-weight: bold;
+                border: none;
+                border-radius: 30px;
+                height: 46px;
+                width: 80%;
+                font-size: 18px;
+                display: block;
+                margin: auto;
+                margin-top: 30px;
+            }
+            .btn:hover {
+                background-color: #555;
+                color: white;
+                transform: translateY(-5px);
+                box-shadow: 0 12px 20px -10px rgba(0, 0, 0, 1);
+            }
+            .btn:active {
+                transform: scale(0.9);
+            }
+            .fig{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 90%;
+                margin: auto;
+                margin-top: 0%;
+            }
+            .bg_pic{
+                width: 80%;
+            }
+            .dB{
+                height: 10%;
+                margin: auto;
+                margin-bottom: 0%;
+                text-align: center;
+                bottom: 0;
+                display: none;
+            }
+            /* 适配PC */
+            @media screen and (min-width:960px) {
+                .box{
+                    max-width: 950px;
+                    min-width: 750px;
+                }
+            }
+            /* 适配pad */
+            @media screen and (max-width:960px) {
+                .box{
+                    display: block;
+                    height: auto;
+                }
+                .left, .right{
+                    width: 100%;
+                    margin-top: 0;
+                }
+                .right{
+                    height: 200px;
+                }
+                .left{
+                    padding: 2vw 2vw;
+                }
+                h1{
+                    padding-top: 0;
+                    margin-top: 1vw;
+                }
+                .inputItem, .btn{
+                    margin-top: 2vw;
+                }
+            }
+            /* 适配phone */
+            @media screen and (max-width:750px) {
+                .box{
+                    width: 85%;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="box">
+            <div class="left">
+                <h1>声压级预测</h1>
+
+                <form id="Form">
+                    <input type="number" class="inputItem" name="Qv" placeholder="流量Qv" required>
+                    <input type="number" class="inputItem" name="DP" placeholder="压降DP" required>
+                    <input type="number" class="inputItem" name="RPM" placeholder="转速RPM" required>
+                    <select class="inputItem" name="type" placeholder="空调型号">
+                        <option value="AD02" >空调型号</option>
+                        <option value="AD02" >AD02</option>
+                        <option value="AD02" >BYD HTH</option>
+                        <option value="AD02" >E0Y-3Z3M</option>
+                        <option value="AD02" >GEM</option>
+                        <option value="AD02" >H37</option>
+                        <option value="AD02" >H97D</option>
+                        <option value="AD02" >KKL</option>
+                        <option value="AD02" >M1E</option>
+                        <option value="AD02" >MAR2 2Z</option>
+                        <option value="AD02" >MAR2 EVA2</option>
+                        <option value="AD02" >MBQ</option>
+                        <option value="AD02" >MEB</option>
+                        <option value="AD02" >NU2</option>
+                        <option value="AD02" >SA5H</option>
+                        <option value="AD02" >SRH</option>
+                        <option value="AD02" >T1X</option>
+                        <option value="AD02" >T2X RHD</option>
+                        <option value="AD02" >X03</option>
+                    </select>
+                    
+                    <select class="inputItem" name="mode" placeholder="工作模式">
+                        <option value="AD02" >工作模式</option>
+                        <option value="AD02" >CVAR</option>
+                        <option value="AD02" >CVAF</option>
+                        <option value="AD02" >HDF</option>
+                        <option value="AD02" >HFF</option>
+                    </select>
+
+                    <input type="submit" class="btn" value="预测">
+                </form>
+            </div>
+            <div class="right">
+                <div class="fig" id="fig0">
+                    <img src="/static/logo.png" alt="logo" class="bg_pic" id="pic">
+                </div>
+                <div class="dB" id="pred_db"></div>
+            </div>
+        </div>
+    </body>
+
+    <footer>
+        <!-- Plotly.js -->
+        <script type="text/javascript" src="{{ url_for('static', filename='plotly-2.35.2.min.js') }}"></script>    
+        <script type="text/javascript">
+            document.getElementById('Form').addEventListener('submit', function(event){
+                event.preventDefault(); // 阻止表单默认提交行为
+                var formData = new FormData(document.querySelector('form'));
+                fetch('/', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // 你可以在这里更新DOM来显示响应
+                    var db = data.db;
+                    var dbStr = db.toFixed(2);
+                    var fft = data.fft;
+                    console.log(dbStr);
+                    document.getElementById('pred_db').style.display = 'block';
+                    document.getElementById("pred_db").innerHTML = `预测噪声值${dbStr}dB`;
+                    document.getElementById('pic').style.display = 'none';
+                    var graph = JSON.parse(fft)
+                    Plotly.newPlot('fig0', // the ID of the div, created above
+                            graph.data,
+                            graph.layout || {});
+                })
+                .catch(error => console.error('Error:', error));
+
+            });
+        </script>
+    </footer>
+</html>

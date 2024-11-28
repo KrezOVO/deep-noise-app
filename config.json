@@ -1,0 +1,7 @@
+{
+    "model_path": "./snapshots/1113_nc400_type_epoch_400.pth",
+    "model_nc": 400,
+    "fft_model_path": "./snapshots/1125_nc400_type_cos_mse_epoch_fft_400.pth",
+    "fft_nc": 400,
+    "fft_num_bins": 80
+}
