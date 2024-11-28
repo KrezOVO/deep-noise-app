@@ -3,7 +3,6 @@ import plotly
 import json
 from deepnoiseapp import DeepNoiseApp
 import numpy as np
-import pandas as pd
 
 app = Flask(__name__)
 app.debug = True
