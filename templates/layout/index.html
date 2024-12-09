@@ -125,6 +125,10 @@
                     width: 85%;
                 }
             }
+            .download-btn {
+                width: 200px;
+                margin-top: 10px;
+            }
         </style>
     </head>
     <body>
@@ -174,6 +178,7 @@
                     <img src="/static/logo.png" alt="logo" class="bg_pic" id="pic">
                 </div>
                 <div class="dB" id="pred_db"></div>
+                <button class="btn download-btn" id="downloadBtn" style="display: none;">下载数据</button>
             </div>
         </div>
     </body>
@@ -199,13 +204,17 @@
                     document.getElementById('pred_db').style.display = 'block';
                     document.getElementById("pred_db").innerHTML = `预测噪声值${dbStr}dB`;
                     document.getElementById('pic').style.display = 'none';
+                    document.getElementById('downloadBtn').style.display = 'block';
                     var graph = JSON.parse(fft)
-                    Plotly.newPlot('fig0', // the ID of the div, created above
+                    Plotly.newPlot('fig0',
                             graph.data,
                             graph.layout || {});
                 })
                 .catch(error => console.error('Error:', error));
+            });
 
+            document.getElementById('downloadBtn').addEventListener('click', function() {
+                window.location.href = '/download_data';
             });
         </script>
     </footer>
