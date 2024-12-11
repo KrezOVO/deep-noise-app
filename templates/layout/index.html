@@ -259,8 +259,9 @@
                     var fig = data.fig;
                     document.getElementById('widget').style.display = 'block';
                     document.getElementById('pic').style.display = 'none';
-                    graphs = JSON.parse(fig)
-                    graph_num = graphs.length
+                    graphs = JSON.parse(fig);
+                    graph_num = graphs.length;
+                    graph_ind = 1;
                     document.getElementById("pages").innerHTML = `${graph_ind} / ${graph_num}`;
                     var graph = graphs[graph_ind-1]
                     Plotly.newPlot('fig0', // the ID of the div, created above

@@ -48,5 +48,5 @@ class DeepNoiseApp:
         input = torch.tensor(input).to(torch.float32)
         type_ = torch.LongTensor(np.array([np.array(range(data['type']*self.fft_out, (data['type']+1)*self.fft_out)) for _ in range(len(data['data']))]))
         fft_pred = self.fft_model(input, type_)
-        fft_pred = fft_pred.squeeze().tolist()
+        fft_pred = fft_pred.tolist()
         return fft_pred
