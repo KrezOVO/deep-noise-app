@@ -37,6 +37,8 @@ class DeepNoiseApp:
         type_ = type_.unsqueeze(1)
         pred = self.model(input, type_)
         pred = pred.squeeze().tolist()
+        if isinstance(pred, float):
+            pred = [pred]
         return pred
 
     def predict_3octave(self,data):
