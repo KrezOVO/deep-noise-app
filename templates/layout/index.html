@@ -48,7 +48,7 @@
                 padding-top: 85px;
                 margin-top: 0;
             }
-            .inputItem{
+            .inputItem, .inputItem1, .inputItem2{
                 height: 44px;
                 padding: 0;
                 padding-left: 5px;
@@ -59,6 +59,12 @@
                 width: 100%;
                 font-size: 18px;
                 margin-top: 20px;
+            }
+            .inputItem1{
+                width: 51%;
+            }
+            .inputItem2{
+                width: 20%;
             }
             .btn{
                 background-color: #c2c2c2;
@@ -109,24 +115,20 @@
                 margin-top: 0%;
             }
             .bg_pic{
-                width: 80%;
-                margin-top: 5%;
+                width: 90%;
+                margin-top: 30%;
                 position: relative;
             }
-            .dB{
-                height: 20%;
-                margin: auto;
-                margin-bottom: 0%;
-                text-align: center;
-                bottom: 0;
+            #widget{
+                width: 100%;
+                right: 1%;
+                margin-top: 4%;
+                position: absolute;
+                text-align: right;
                 display: none;
             }
-            #output{
-                position: absolute;
+            #output,#prev,#next{
                 width: 12%;
-                right: 1%;
-                margin-top: 0;
-                display: none;
             }
             /* 适配PC */
             @media screen and (min-width:960px) {
@@ -168,16 +170,22 @@
         </style>
     </head>
     <body>
-        <h1 class="title">风机气动噪声快速计算</h1>
+        <h1 class="title">Rapid Acoustic Prediction for Air Conditioning</h1>
         <div class="box">
             <div class="main"><form id="Form">
                 <div class="left">
-                    <h1>参数输入</h1>
-                    <input type="number" class="inputItem" name="Qv" placeholder="流量Qv" required>
-                    <input type="number" class="inputItem" name="DP" placeholder="压降DP" required>
-                    <input type="number" class="inputItem" name="RPM" placeholder="转速RPM" required>
-                    <select class="inputItem" name="type" placeholder="空调型号">
-                        <option value="0" >空调型号</option>
+                    <h1>Input</h1>
+                    <input type="number" class="inputItem1" name="Qv" placeholder="Qv" required>
+                    <input type="number" class="inputItem2" name="QvInterval" placeholder="step" min="0" step="1" oninput="if(this.value<0){this.value=0}">
+                    <input type="number" class="inputItem2" name="QvNum" placeholder="num" min="1" step="1" oninput="if(this.value<1){this.value=1}">
+                    <input type="number" class="inputItem1" name="DP" placeholder="DP" required>
+                    <input type="number" class="inputItem2" name="DPInterval" placeholder="step" min="0" step="1" oninput="if(this.value<0){this.value=0}">
+                    <input type="number" class="inputItem2" name="DPNum" placeholder="num" min="1" step="1" oninput="if(this.value<1){this.value=1}">
+                    <input type="number" class="inputItem1" name="RPM" placeholder="RPM" required>
+                    <input type="number" class="inputItem2" name="RPMInterval" placeholder="step" min="0" step="1" oninput="if(this.value<0){this.value=0}">
+                    <input type="number" class="inputItem2" name="RPMNum" placeholder="num" min="1" step="1" oninput="if(this.value<1){this.value=1}">
+                    <select class="inputItem" name="type" placeholder="Type">
+                        <option value="0" >Type</option>
                         <option value="0" >AD02</option>
                         <option value="1" >BYD HTH</option>
                         <option value="2" >E0Y-3Z3M</option>
@@ -198,8 +206,8 @@
                         <option value="17" >X03</option>
                     </select>
                     
-                    <select class="inputItem" name="mode" placeholder="工作模式">
-                        <option value="AD02" >工作模式</option>
+                    <select class="inputItem" name="mode" placeholder="Mode">
+                        <option value="AD02" >Mode</option>
                         <option value="AD02" >CVAR</option>
                         <option value="AD02" >CVAF</option>
                         <option value="AD02" >HDF</option>
@@ -209,21 +217,25 @@
 
                 <div class="right">
                     <div class="header">
-                        <input type="submit" class="btn" id="/" value="总声压级">
-                        <input type="submit" class="dis_btn" id="/octave" value="倍频程">
-                        <input type="submit" class="btn" id="/3octave" value="1/3倍频程">
+                        <input type="submit" class="btn" id="/" value="dBA">
+                        <input type="submit" class="dis_btn" id="/octave" value="Octave">
+                        <input type="submit" class="btn" id="/3octave" value="1/3Octave">
                         <input type="submit" class="dis_btn" id="/line" value="线谱">
-                        <input type="submit" class="dis_btn" id="/noise" value="声响度">
-                        <input type="submit" class="dis_btn" id="/harshness" value="尖锐度">
-                        <input type="submit" class="dis_btn" id="/vibration" value="振动度">
+                        <input type="submit" class="dis_btn" id="/noise" value="Noise">
+                        <input type="submit" class="dis_btn" id="/harshness" value="Harshness">
+                        <input type="submit" class="dis_btn" id="/vibration" value="Vibration">
                     </div>
                     <div class="fig" id="fig0">
-                        <img src="/static/logo.png" alt="logo" class="bg_pic" id="pic">
+                        <img src="/static/hust-valeo-logo.png" alt="logo" class="bg_pic" id="pic">
                     </div>
-                    <div class="dB" id="pred_db">123</div>
                 </div>
             </form>
-                <button class="btn" id="output" onclick="download()">数据导出</button>
+            <div id="widget">
+                <button class="btn" id="prev" onclick="prev()">Prev</button>
+                <div class="btn" id="pages"></div>
+                <button class="btn" id="next" onclick="next()">Next</button>
+                <button class="btn" id="output" onclick="download()">Download</button>
+            </div>
             </div>
         </div>
     </body>
@@ -232,6 +244,8 @@
         <!-- Plotly.js -->
         <script type="text/javascript" src="{{ url_for('static', filename='plotly-2.35.2.min.js') }}"></script>  
         <script type="text/javascript">
+            graph_ind = 1
+            graph_num = 1
             document.getElementById('Form').addEventListener('submit', function(event){
                 event.preventDefault(); // 阻止表单默认提交行为
                 var formData = new FormData(document.getElementById('Form'));
@@ -242,14 +256,13 @@
                 .then(response => response.json())
                 .then(data => {
                     // 你可以在这里更新DOM来显示响应
-                    var db = data.db;
-                    var dbStr = db.toFixed(2);
-                    var fft = data.fft;
-                    document.getElementById('pred_db').style.display = 'block';
-                    document.getElementById('output').style.display = 'block';
-                    document.getElementById("pred_db").innerHTML = `预测噪声值${dbStr}dB`;
+                    var fig = data.fig;
+                    document.getElementById('widget').style.display = 'block';
                     document.getElementById('pic').style.display = 'none';
-                    graph = JSON.parse(fft)
+                    graphs = JSON.parse(fig)
+                    graph_num = graphs.length
+                    document.getElementById("pages").innerHTML = `${graph_ind} / ${graph_num}`;
+                    var graph = graphs[graph_ind-1]
                     Plotly.newPlot('fig0', // the ID of the div, created above
                             graph.data,
                             graph.layout || {});
@@ -294,11 +307,35 @@
             }
 
             function download() {
-                var data = [
-                    graph.data[0].x,
-                    graph.data[0].y
-                ];
+                var graph = graphs[graph_ind-1];
+                var data = [];
+                for(var i = 0; i<graph.data.length; i++){
+                    data.push(
+                        [graph.data[i].name],
+                        [graph.layout.xaxis.title.text, graph.data[i].x],
+                        [graph.layout.yaxis.title.text, graph.data[i].y]);
+                }
                 saveArrayAsCSV(data, "data.csv")
+            }
+
+            function prev(){
+                graph_ind -= 1;
+                if(graph_ind < 1) graph_ind = 1;
+                document.getElementById("pages").innerHTML = `${graph_ind} / ${graph_num}`;
+                var graph = graphs[graph_ind-1]
+                    Plotly.newPlot('fig0', // the ID of the div, created above
+                            graph.data,
+                            graph.layout || {});
+            }
+
+            function next(){
+                graph_ind += 1
+                if(graph_ind > graph_num) graph_ind = graph_num;
+                document.getElementById("pages").innerHTML = `${graph_ind} / ${graph_num}`;
+                var graph = graphs[graph_ind-1]
+                    Plotly.newPlot('fig0', // the ID of the div, created above
+                            graph.data,
+                            graph.layout || {});
             }
         </script>
     </footer>
