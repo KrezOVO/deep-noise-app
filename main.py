@@ -96,7 +96,8 @@ def dBA_postprocess(Qv, DP, RPM, pred):
     return Qv_fig, DP_fig, RPM_fig
 
 def octave3_postprocess(Qv, DP, RPM, pred_fft):
-    y = np.array(range(0,5000,64))
+    fft_array = np.array(pred_fft)
+    y = np.array(range(0,fft_array.shape[1]*64,64))
     fig = []
     for i in range(len(Qv)):
         for j in range(len(DP)):
@@ -211,6 +212,11 @@ def octave_3():
                         text='Hz'
                     )
                 ),
+                yaxis=dict(
+                    title=dict(
+                        text='dBA'
+                    )
+                )
             )
     )]
     graphJSON = json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
