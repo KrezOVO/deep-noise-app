@@ -33,8 +33,7 @@ class DeepNoiseApp:
         input = transformations(data['data'])
         method = data['method']
         input = torch.tensor(input).to(torch.float32)
-        type_ = torch.LongTensor([data['type'] for _ in range(len(data['data']))])
-        type_ = type_.unsqueeze(1)
+        type_ = torch.tensor([data['type']]).expand(len(data['data']), 1).to(torch.long)
         pred = self.model(input, type_)
         pred = pred.squeeze().tolist()
         if isinstance(pred, float):
@@ -46,8 +45,8 @@ class DeepNoiseApp:
         input = transformations(data['data'])
         method = data['method']
         input = torch.tensor(input).to(torch.float32)
-        type_ = torch.LongTensor(np.array([np.array(range(data['type']*self.fft_out, (data['type']+1)*self.fft_out)) for _ in range(len(data['data']))]))
-        fft_pred = self.fft_model(input)
-        fft_pred = fft_pred[:, 0, type_]
+        fft_pred = self.fft_model(input) 
+        type_ = data['type']
+        fft_pred = fft_pred[:, 0, type_, :]
         fft_pred = fft_pred.tolist()
         return fft_pred

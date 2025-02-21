@@ -27,7 +27,6 @@ class NonLinearType(nn.Module):
 
 
     def forward(self, inp, type_):
-        type_ = torch.LongTensor([type_])
         x = self.relu(self.hidden(inp))
         out = self.out(x)
         output = out.gather(1, type_)
