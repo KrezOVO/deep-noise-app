@@ -28,22 +28,25 @@ class DeepNoiseApp:
         self.fft_out = config['fft_num_bins']
         app.predict = self.predict
     
-    def predict(self,data):
+    def predict(self, data):
         transformations = Normalizer(mean=[354.16, 32.17, 2649.37], std=[187.5, 647.17, 2045.62])
-        for i in range(5-len(data)):
-            data.append(1)
-        input = transformations(data[:3])
-        type = data[3]
-        method = data[4]
+        input = transformations(data['data'])
+        method = data['method']
         input = torch.tensor(input).to(torch.float32)
-        input = input.unsqueeze(0)
-        type = torch.LongTensor(type)
-        type = type.unsqueeze(0)
-        pred = self.model(input, type)
+        type_ = torch.LongTensor([data['type'] for _ in range(len(data['data']))])
+        type_ = type_.unsqueeze(1)
+        pred = self.model(input, type_)
+        pred = pred.squeeze().tolist()
+        if isinstance(pred, float):
+            pred = [pred]
+        return pred
 
-        type_ = torch.LongTensor(np.array(range(data[3]*self.fft_out, (data[3]+1)*self.fft_out)))
-        type_ = type_.unsqueeze(0)
+    def predict_3octave(self,data):
+        transformations = Normalizer(mean=[354.16, 32.17, 2649.37], std=[187.5, 647.17, 2045.62])
+        input = transformations(data['data'])
+        method = data['method']
+        input = torch.tensor(input).to(torch.float32)
+        type_ = torch.LongTensor(np.array([np.array(range(data['type']*self.fft_out, (data['type']+1)*self.fft_out)) for _ in range(len(data['data']))]))
         fft_pred = self.fft_model(input, type_)
-        pred = pred.squeeze().item()
-        fft_pred = fft_pred.squeeze().tolist()
-        return pred, fft_pred
+        fft_pred = fft_pred.tolist()
+        return fft_pred

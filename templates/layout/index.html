@@ -20,22 +20,35 @@
                 left: 50%;
                 transform: translate(-50%, -50%);
             }
+            .title{
+                position: fixed;
+                display: block;
+                height: 10%;
+                width: 100%;
+            }
+            .main{
+                display: inline-block;
+                height: 90%;
+            }
             .left{
                 width: 35%;
-                height: 90%;
+                height: 100%;
                 background-color: #fff;
                 box-sizing: border-box;
                 padding: 0 20px;
+                display: inline-block;
             }
             .right{
-                width: 65%;
+                width: 64%;
+                display: inline-block;
+                position: fixed;
             }
             h1{
                 text-align: center;
-                padding-top: 45px;
+                padding-top: 85px;
                 margin-top: 0;
             }
-            .inputItem{
+            .inputItem, .inputItem1, .inputItem2{
                 height: 44px;
                 padding: 0;
                 padding-left: 5px;
@@ -47,18 +60,24 @@
                 font-size: 18px;
                 margin-top: 20px;
             }
+            .inputItem1{
+                width: 51%;
+            }
+            .inputItem2{
+                width: 20%;
+            }
             .btn{
                 background-color: #c2c2c2;
                 color: black;
                 font-weight: bold;
                 border: none;
                 border-radius: 30px;
-                height: 46px;
-                width: 80%;
+                height: 26px;
+                width: 19%;
                 font-size: 18px;
-                display: block;
+                display: inline;
                 margin: auto;
-                margin-top: 30px;
+                margin-top: 10px;
             }
             .btn:hover {
                 background-color: #555;
@@ -69,24 +88,47 @@
             .btn:active {
                 transform: scale(0.9);
             }
+            .dis_btn{
+                background-color: #ddd;
+                color: #666;
+                font-weight: bold;
+                border: none;
+                border-radius: 30px;
+                height: 26px;
+                width: 19%;
+                font-size: 18px;
+                display: inline;
+                margin: auto;
+                margin-top: 10px;
+                cursor: not-allowed;
+                opacity: 0.6;
+            }
+            .dis_btn:hover {
+                opacity: 1;
+            }
             .fig{
-                display: flex;
+                display: flex; 
                 align-items: center;
                 justify-content: center;
-                height: 90%;
+                height: 80%;
                 margin: auto;
                 margin-top: 0%;
             }
             .bg_pic{
-                width: 80%;
+                width: 90%;
+                margin-top: 30%;
+                position: relative;
             }
-            .dB{
-                height: 10%;
-                margin: auto;
-                margin-bottom: 0%;
-                text-align: center;
-                bottom: 0;
+            #widget{
+                width: 100%;
+                right: 1%;
+                margin-top: 4%;
+                position: absolute;
+                text-align: right;
                 display: none;
+            }
+            #output,#prev,#next{
+                width: 12%;
             }
             /* 适配PC */
             @media screen and (min-width:960px) {
@@ -132,90 +174,174 @@
         </style>
     </head>
     <body>
+        <h1 class="title">Rapid Acoustic Prediction for Air Conditioning</h1>
         <div class="box">
-            <div class="left">
-                <h1>声压级预测</h1>
-
-                <form id="Form">
-                    <input type="number" class="inputItem" name="Qv" placeholder="流量Qv" required>
-                    <input type="number" class="inputItem" name="DP" placeholder="压降DP" required>
-                    <input type="number" class="inputItem" name="RPM" placeholder="转速RPM" required>
-                    <select class="inputItem" name="type" placeholder="空调型号">
-                        <option value="AD02" >空调型号</option>
-                        <option value="AD02" >AD02</option>
-                        <option value="AD02" >BYD HTH</option>
-                        <option value="AD02" >E0Y-3Z3M</option>
-                        <option value="AD02" >GEM</option>
-                        <option value="AD02" >H37</option>
-                        <option value="AD02" >H97D</option>
-                        <option value="AD02" >KKL</option>
-                        <option value="AD02" >M1E</option>
-                        <option value="AD02" >MAR2 2Z</option>
-                        <option value="AD02" >MAR2 EVA2</option>
-                        <option value="AD02" >MBQ</option>
-                        <option value="AD02" >MEB</option>
-                        <option value="AD02" >NU2</option>
-                        <option value="AD02" >SA5H</option>
-                        <option value="AD02" >SRH</option>
-                        <option value="AD02" >T1X</option>
-                        <option value="AD02" >T2X RHD</option>
-                        <option value="AD02" >X03</option>
+            <div class="main"><form id="Form">
+                <div class="left">
+                    <h1>Input</h1>
+                    <input type="number" class="inputItem1" name="Qv" placeholder="Qv" required>
+                    <input type="number" class="inputItem2" name="QvInterval" placeholder="step" min="0" step="1" oninput="if(this.value<0){this.value=0}">
+                    <input type="number" class="inputItem2" name="QvNum" placeholder="num" min="1" step="1" oninput="if(this.value<1){this.value=1}">
+                    <input type="number" class="inputItem1" name="DP" placeholder="DP" required>
+                    <input type="number" class="inputItem2" name="DPInterval" placeholder="step" min="0" step="1" oninput="if(this.value<0){this.value=0}">
+                    <input type="number" class="inputItem2" name="DPNum" placeholder="num" min="1" step="1" oninput="if(this.value<1){this.value=1}">
+                    <input type="number" class="inputItem1" name="RPM" placeholder="RPM" required>
+                    <input type="number" class="inputItem2" name="RPMInterval" placeholder="step" min="0" step="1" oninput="if(this.value<0){this.value=0}">
+                    <input type="number" class="inputItem2" name="RPMNum" placeholder="num" min="1" step="1" oninput="if(this.value<1){this.value=1}">
+                    <select class="inputItem" name="type" placeholder="Type">
+                        <option value="0" >Type</option>
+                        <option value="0" >AD02</option>
+                        <option value="1" >BYD HTH</option>
+                        <option value="2" >E0Y-3Z3M</option>
+                        <option value="3" >GEM</option>
+                        <option value="4" >H37</option>
+                        <option value="5" >H97D</option>
+                        <option value="6" >KKL</option>
+                        <option value="7" >M1E</option>
+                        <option value="8" >MAR2 2Z</option>
+                        <option value="9" >MAR2 EVA2</option>
+                        <option value="10" >MBQ</option>
+                        <option value="11" >MEB</option>
+                        <option value="12" >NU2</option>
+                        <option value="13" >SA5H</option>
+                        <option value="14" >SRH</option>
+                        <option value="15" >T1X</option>
+                        <option value="16" >T2X RHD</option>
+                        <option value="17" >X03</option>
                     </select>
                     
-                    <select class="inputItem" name="mode" placeholder="工作模式">
-                        <option value="AD02" >工作模式</option>
+                    <select class="inputItem" name="mode" placeholder="Mode">
+                        <option value="AD02" >Mode</option>
                         <option value="AD02" >CVAR</option>
                         <option value="AD02" >CVAF</option>
                         <option value="AD02" >HDF</option>
                         <option value="AD02" >HFF</option>
                     </select>
-
-                    <input type="submit" class="btn" value="预测">
-                </form>
-            </div>
-            <div class="right">
-                <div class="fig" id="fig0">
-                    <img src="/static/logo.png" alt="logo" class="bg_pic" id="pic">
                 </div>
-                <div class="dB" id="pred_db"></div>
-                <button class="btn download-btn" id="downloadBtn" style="display: none;">下载数据</button>
+
+                <div class="right">
+                    <div class="header">
+                        <input type="submit" class="btn" id="/" value="dBA">
+                        <input type="submit" class="dis_btn" id="/octave" value="Octave">
+                        <input type="submit" class="btn" id="/3octave" value="1/3Octave">
+                        <input type="submit" class="dis_btn" id="/line" value="线谱">
+                        <input type="submit" class="dis_btn" id="/noise" value="Noise">
+                        <input type="submit" class="dis_btn" id="/harshness" value="Harshness">
+                        <input type="submit" class="dis_btn" id="/vibration" value="Vibration">
+                    </div>
+                    <div class="fig" id="fig0">
+                        <img src="/static/hust-valeo-logo.png" alt="logo" class="bg_pic" id="pic">
+                    </div>
+                </div>
+            </form>
+            <div id="widget">
+                <button class="btn" id="prev" onclick="prev()">Prev</button>
+                <div class="btn" id="pages"></div>
+                <button class="btn" id="next" onclick="next()">Next</button>
+                <button class="btn" id="output" onclick="download()">Download</button>
+            </div>
             </div>
         </div>
     </body>
 
     <footer>
         <!-- Plotly.js -->
-        <script type="text/javascript" src="{{ url_for('static', filename='plotly-2.35.2.min.js') }}"></script>    
+        <script type="text/javascript" src="{{ url_for('static', filename='plotly-2.35.2.min.js') }}"></script>  
         <script type="text/javascript">
+            graph_ind = 1
+            graph_num = 1
             document.getElementById('Form').addEventListener('submit', function(event){
                 event.preventDefault(); // 阻止表单默认提交行为
-                var formData = new FormData(document.querySelector('form'));
-                fetch('/', {
+                var formData = new FormData(document.getElementById('Form'));
+                fetch(event.submitter.id, {
                     method: 'POST',
                     body: formData
                 })
                 .then(response => response.json())
                 .then(data => {
                     // 你可以在这里更新DOM来显示响应
-                    var db = data.db;
-                    var dbStr = db.toFixed(2);
-                    var fft = data.fft;
-                    console.log(dbStr);
-                    document.getElementById('pred_db').style.display = 'block';
-                    document.getElementById("pred_db").innerHTML = `预测噪声值${dbStr}dB`;
+                    var fig = data.fig;
+                    document.getElementById('widget').style.display = 'block';
                     document.getElementById('pic').style.display = 'none';
-                    document.getElementById('downloadBtn').style.display = 'block';
-                    var graph = JSON.parse(fft)
-                    Plotly.newPlot('fig0',
+                    graphs = JSON.parse(fig);
+                    graph_num = graphs.length;
+                    graph_ind = 1;
+                    document.getElementById("pages").innerHTML = `${graph_ind} / ${graph_num}`;
+                    var graph = graphs[graph_ind-1]
+                    Plotly.newPlot('fig0', // the ID of the div, created above
                             graph.data,
                             graph.layout || {});
                 })
                 .catch(error => console.error('Error:', error));
             });
 
-            document.getElementById('downloadBtn').addEventListener('click', function() {
-                window.location.href = '/download_data';
-            });
+            document.getElementById('octave').onclick = function(event){
+                event.preventDefault(); // 阻止表单默认提交行为
+            };
+
+            document.getElementById('line').onclick = function(event){
+                event.preventDefault(); // 阻止表单默认提交行为
+            };
+
+            document.getElementById('noise').onclick = function(event){
+                event.preventDefault(); // 阻止表单默认提交行为
+            };
+
+            document.getElementById('harshness').onclick = function(event){
+                event.preventDefault(); // 阻止表单默认提交行为
+            };
+
+            document.getElementById('vibration').onclick = function(event){
+                event.preventDefault(); // 阻止表单默认提交行为
+            };
+
+            function saveArrayAsCSV(array, filename) {
+                const csvContent = array.map(row => row.join(",")).join("\n");
+                const blob = new Blob([csvContent], { type: 'text/csv;' });
+                const link = document.createElement("a");
+                if (link.download !== undefined) { // feature detection
+                    // Browsers that support HTML5 download attribute
+                    const url = URL.createObjectURL(blob);
+                    link.setAttribute("href", url);
+                    link.setAttribute("download", filename);
+                    link.style.visibility = 'hidden';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+            }
+
+            function download() {
+                var graph = graphs[graph_ind-1];
+                var data = [];
+                for(var i = 0; i<graph.data.length; i++){
+                    data.push(
+                        [graph.data[i].name],
+                        [graph.layout.xaxis.title.text, graph.data[i].x],
+                        [graph.layout.yaxis.title.text, graph.data[i].y]);
+                }
+                saveArrayAsCSV(data, "data.csv")
+            }
+
+            function prev(){
+                graph_ind -= 1;
+                if(graph_ind < 1) graph_ind = 1;
+                document.getElementById("pages").innerHTML = `${graph_ind} / ${graph_num}`;
+                var graph = graphs[graph_ind-1]
+                    Plotly.newPlot('fig0', // the ID of the div, created above
+                            graph.data,
+                            graph.layout || {});
+            }
+
+            function next(){
+                graph_ind += 1
+                if(graph_ind > graph_num) graph_ind = graph_num;
+                document.getElementById("pages").innerHTML = `${graph_ind} / ${graph_num}`;
+                var graph = graphs[graph_ind-1]
+                    Plotly.newPlot('fig0', // the ID of the div, created above
+                            graph.data,
+                            graph.layout || {});
+            }
         </script>
     </footer>
 </html>
