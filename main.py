@@ -100,19 +100,17 @@ def dBA_postprocess(Qv, DP, RPM, pred):
 
 def octave3_postprocess(Qv, DP, RPM, pred_fft):
     fft_array = np.array(pred_fft)
-    y = np.array(range(0,fft_array.shape[1]*64,64))
+    # 定义1/3倍频程中心频率
+    frequencies = [31.5, 40, 50, 63, 80, 100, 125, 160, 200, 250, 315, 400, 500, 
+                  630, 800, 1000, 1250, 1600, 2000, 2500, 3150, 4000, 5000, 
+                  6300, 8000]
     fig = []
     for i in range(len(Qv)):
         for j in range(len(DP)):
             for k in range(len(RPM)):
-                s_x, s_y = stairs(y, pred_fft[k+j*len(RPM)+i*len(RPM)*len(DP)])
+                s_x, s_y = stairs(frequencies, pred_fft[k+j*len(RPM)+i*len(RPM)*len(DP)])
                 fig.append(
-                    dict(
-                        x = s_x,
-                        y = s_y,
-                        name=f'Qv_{Qv[i]}_DP_{DP[j]}_RPM_{RPM[k]}',
-                        type='scatter'
-                    )
+                    dict(x = s_x, y = s_y, name=f'Qv_{Qv[i]}_DP_{DP[j]}_RPM_{RPM[k]}', type='scatter')
                 )
     return fig
 
