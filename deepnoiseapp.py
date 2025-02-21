@@ -1,4 +1,4 @@
-from model.nonlinear import NonLinear, NonLinearType, NonLinearTypeBin
+from model.nonlinear import NonLinear, NonLinearType, NonLinearTypeBin, NonLinearTypeBinModel
 from utils.transform import Normalizer
 import json
 import torch
@@ -19,13 +19,13 @@ class DeepNoiseApp:
         model.load_state_dict(saved_state_dict)
         model.eval()
 
-        fft_model = NonLinearTypeBin(nc=config['fft_nc'], out_nc=14, num_bins=config['fft_num_bins'])
+        fft_model = NonLinearTypeBinModel(nc=config['fft_nc'], out_nc=18, num_bins=25, num_sheets=4)
         saved_state_dict = torch.load(config['fft_model_path'], weights_only=True)
         fft_model.load_state_dict(saved_state_dict)
         fft_model.eval()
         self.model = model
         self.fft_model = fft_model
-        self.fft_out = config['fft_num_bins']
+        self.fft_out = 25
         app.predict = self.predict
     
     def predict(self, data):
@@ -47,6 +47,7 @@ class DeepNoiseApp:
         method = data['method']
         input = torch.tensor(input).to(torch.float32)
         type_ = torch.LongTensor(np.array([np.array(range(data['type']*self.fft_out, (data['type']+1)*self.fft_out)) for _ in range(len(data['data']))]))
-        fft_pred = self.fft_model(input, type_)
+        fft_pred = self.fft_model(input)
+        fft_pred = fft_pred[:, 0, type_]
         fft_pred = fft_pred.tolist()
         return fft_pred
