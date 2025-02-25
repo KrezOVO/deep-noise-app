@@ -47,7 +47,7 @@ class DeepNoiseApp:
         input = torch.tensor(input).to(torch.float32)
         fft_pred = self.fft_model(input) 
         type_ = data['type']
-        fft_pred = fft_pred[:, 0, type_, :]
+        fft_pred = fft_pred[:, method, type_, :]
         fft_pred = torch.clamp(fft_pred, min=0.0)
         fft_pred = fft_pred.tolist()
         return fft_pred

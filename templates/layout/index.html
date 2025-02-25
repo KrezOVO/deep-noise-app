@@ -211,11 +211,11 @@
                     </select>
                     
                     <select class="inputItem" name="mode" placeholder="Mode">
-                        <option value="AD02" >Mode</option>
-                        <option value="AD02" >CVAR</option>
-                        <option value="AD02" >CVAF</option>
-                        <option value="AD02" >HDF</option>
-                        <option value="AD02" >HFF</option>
+z                        <option value="0" >Mode</option>
+                        <option value="0" >CVAF</option>
+                        <option value="1" >CVAR</option>
+                        <option value="2" >HDF</option>
+                        <option value="3" >HFF</option>
                     </select>
                 </div>
 
@@ -269,8 +269,8 @@
                     document.getElementById("pages").innerHTML = `${graph_ind} / ${graph_num}`;
                     var graph = graphs[graph_ind-1]
                     Plotly.newPlot('fig0', // the ID of the div, created above
-                            graph.data,
-                            graph.layout || {});
+                        graph.data,
+                        graph.layout || {});
                 })
                 .catch(error => console.error('Error:', error));
             });
@@ -329,8 +329,8 @@
                 document.getElementById("pages").innerHTML = `${graph_ind} / ${graph_num}`;
                 var graph = graphs[graph_ind-1]
                     Plotly.newPlot('fig0', // the ID of the div, created above
-                            graph.data,
-                            graph.layout || {});
+                    graph.data,
+                    graph.layout || {});
             }
 
             function next(){
@@ -339,8 +339,8 @@
                 document.getElementById("pages").innerHTML = `${graph_ind} / ${graph_num}`;
                 var graph = graphs[graph_ind-1]
                     Plotly.newPlot('fig0', // the ID of the div, created above
-                            graph.data,
-                            graph.layout || {});
+                    graph.data,
+                    graph.layout || {});
             }
         </script>
     </footer>
