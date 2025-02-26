@@ -1,4 +1,4 @@
-from model.nonlinear import NonLinear, NonLinearType, NonLinearTypeBin, NonLinearTypeBinModel
+from model.nonlinear import NonLinear, NonLinearType, NonLinearTypeBin, NonLinearTypeBinModel, NonLinearTypeModel
 from utils.transform import Normalizer
 import json
 import torch
@@ -14,13 +14,15 @@ class DeepNoiseApp:
         with open('config.json', 'r') as f:
             config = json.load(f)
         
-        model = NonLinearType(nc=config['model_nc'])
-        saved_state_dict = torch.load(config['model_path'], weights_only=True)
+        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        
+        model = NonLinearTypeModel(nc=config['model_nc'], num_sheets=4)
+        saved_state_dict = torch.load(config['model_path'], map_location=device)
         model.load_state_dict(saved_state_dict)
         model.eval()
 
         fft_model = NonLinearTypeBinModel(nc=config['fft_nc'], out_nc=18, num_bins=25, num_sheets=4)
-        saved_state_dict = torch.load(config['fft_model_path'], weights_only=True)
+        saved_state_dict = torch.load(config['fft_model_path'], map_location=device)
         fft_model.load_state_dict(saved_state_dict)
         fft_model.eval()
         self.model = model
@@ -33,8 +35,8 @@ class DeepNoiseApp:
         input = transformations(data['data'])
         method = data['method']
         input = torch.tensor(input).to(torch.float32)
-        type_ = torch.tensor([data['type']]).expand(len(data['data']), 1).to(torch.long)
-        pred = self.model(input, type_)
+        pred = self.model(input)
+        pred = pred[:, method, data['type']]
         pred = pred.squeeze().tolist()
         if isinstance(pred, float):
             pred = [pred]

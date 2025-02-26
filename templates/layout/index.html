@@ -285,7 +285,10 @@ z                        <option value="0" >Mode</option>
                             type: 'bar',
                             x: Array.from({length: 25}, (_, i) => i),
                             y: values,
-                            width: 1
+                            width: 0.9,
+                            marker: {
+                                color: 'rgb(0, 240, 0)'
+                            }
                         };
 
                         var data = [trace0];
@@ -295,10 +298,17 @@ z                        <option value="0" >Mode</option>
                                 tickmode: 'array',
                                 ticktext: freqs,
                                 tickvals: Array.from({length: 25}, (_, i) => i),
-                                title: 'Frequency (Hz)'
+                                title: 'Frequency (Hz)',
+                                tickangle: 45,
+                                showgrid: true,
+                                gridwidth: 1,
+                                gridcolor: '#E5E5E5'
                             },
                             yaxis: {
-                                title: 'dBA'
+                                title: 'dBA',
+                                showgrid: true,
+                                gridwidth: 1,
+                                gridcolor: '#E5E5E5'
                             }
                         };
 
