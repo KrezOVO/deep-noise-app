@@ -13,12 +13,12 @@
             .box{
                 background: white;
                 width: 80%;
-                height: 600px;
+                height: 850px;
                 display: flex;
                 position: fixed;
                 top: 50%;
                 left: 50%;
-                transform: translate(-50%, -50%);
+                transform: translate(-50%, -45%);
             }
             .title{
                 position: fixed;
@@ -31,7 +31,7 @@
                 height: 90%;
             }
             .left{
-                width: 35%;
+                width: 45%;
                 height: 100%;
                 background-color: #fff;
                 box-sizing: border-box;
@@ -39,13 +39,13 @@
                 display: inline-block;
             }
             .right{
-                width: 64%;
+                width: 54%;
                 display: inline-block;
                 position: fixed;
             }
             h1{
                 text-align: center;
-                padding-top: 85px;
+                padding-top: 50px;
                 margin-top: 0;
             }
             .inputItem, .inputItem1, .inputItem2{
@@ -56,7 +56,6 @@
                 background: none;
                 outline: none;
                 border-bottom: 3px solid black;
-                width: 100%;
                 font-size: 18px;
                 margin-top: 20px;
             }
@@ -65,6 +64,18 @@
             }
             .inputItem2{
                 width: 20%;
+            }
+            .inputGroup {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 20px;
+            }
+            label {
+                width: 20%;
+            }
+            select.inputItem {
+                width: 100%;
             }
             .btn{
                 background-color: #c2c2c2;
@@ -179,16 +190,69 @@
             <div class="main"><form id="Form">
                 <div class="left">
                     <h1>Input</h1>
-                    <input type="number" class="inputItem1" name="Qv" placeholder="Qv" required>
-                    <input type="number" class="inputItem2" name="QvInterval" placeholder="step" min="0" step="1" oninput="if(this.value<0){this.value=0}">
-                    <input type="number" class="inputItem2" name="QvNum" placeholder="num" min="1" step="1" oninput="if(this.value<1){this.value=1}">
-                    <input type="number" class="inputItem1" name="DP" placeholder="DP" required>
-                    <input type="number" class="inputItem2" name="DPInterval" placeholder="step" min="0" step="1" oninput="if(this.value<0){this.value=0}">
-                    <input type="number" class="inputItem2" name="DPNum" placeholder="num" min="1" step="1" oninput="if(this.value<1){this.value=1}">
-                    <input type="number" class="inputItem1" name="RPM" placeholder="RPM" required>
-                    <input type="number" class="inputItem2" name="RPMInterval" placeholder="step" min="0" step="1" oninput="if(this.value<0){this.value=0}">
-                    <input type="number" class="inputItem2" name="RPMNum" placeholder="num" min="1" step="1" oninput="if(this.value<1){this.value=1}">
-                    <select class="inputItem" name="type" placeholder="Type">
+                    <div class="inputGroup">
+                        <label for="Qv">Qv</label>
+                        <input type="number" class="inputItem1" id="Qv" name="Qv" required>
+                        <label for="QvInterval">Step</label>
+                        <input type="number" class="inputItem2" id="QvInterval" name="QvInterval" min="0" step="1" oninput="if(this.value<0){this.value=0}">
+                        <label for="QvNum">Num</label>
+                        <input type="number" class="inputItem2" id="QvNum" name="QvNum" min="1" step="1" oninput="if(this.value<1){this.value=1}">
+                    </div>
+                    
+                    <div class="inputGroup">
+                        <label for="DP">DP</label>
+                        <input type="number" class="inputItem1" id="DP" name="DP" required>
+                        <label for="DPInterval">Step</label>
+                        <input type="number" class="inputItem2" id="DPInterval" name="DPInterval" min="0" step="1" oninput="if(this.value<0){this.value=0}">
+                        <label for="DPNum">Num</label>
+                        <input type="number" class="inputItem2" id="DPNum" name="DPNum" min="1" step="1" oninput="if(this.value<1){this.value=1}">
+                    </div>
+                    
+                    <div class="inputGroup">
+                        <label for="RPM">RPM</label>
+                        <input type="number" class="inputItem1" id="RPM" name="RPM" required>
+                        <label for="RPMInterval">Step</label>
+                        <input type="number" class="inputItem2" id="RPMInterval" name="RPMInterval" min="0" step="1" oninput="if(this.value<0){this.value=0}">
+                        <label for="RPMNum">Num</label>
+                        <input type="number" class="inputItem2" id="RPMNum" name="RPMNum" min="1" step="1" oninput="if(this.value<1){this.value=1}">
+                    </div>
+                    
+                    <div class="inputGroup">
+                        <label for="wheelDiameter">Wheel Diameter</label>
+                        <input type="number" class="inputItem1" id="wheelDiameter" name="wheelDiameter" step="0.01" required>
+                        <label for="wheelDiameterInterval">Step</label>
+                        <input type="number" class="inputItem2" id="wheelDiameterInterval" name="wheelDiameterInterval" min="0" step="0.01" oninput="if(this.value<0){this.value=0}">
+                        <label for="wheelDiameterNum">Num</label>
+                        <input type="number" class="inputItem2" id="wheelDiameterNum" name="wheelDiameterNum" min="1" step="1" oninput="if(this.value<1){this.value=1}">
+                    </div>
+                    
+                    <div class="inputGroup">
+                        <label for="wheelHeight">Height of Wheel</label>
+                        <input type="number" class="inputItem1" id="wheelHeight" name="wheelHeight" step="0.01" required>
+                        <label for="wheelHeightInterval">Step</label>
+                        <input type="number" class="inputItem2" id="wheelHeightInterval" name="wheelHeightInterval" min="0" step="0.01" oninput="if(this.value<0){this.value=0}">
+                        <label for="wheelHeightNum">Num</label>
+                        <input type="number" class="inputItem2" id="wheelHeightNum" name="wheelHeightNum" min="1" step="1" oninput="if(this.value<1){this.value=1}">
+                    </div>
+                    
+                    <div class="inputGroup">
+                        <label for="wheelHoleDiameter">Wheel Hole Diameter</label>
+                        <input type="number" class="inputItem1" id="wheelHoleDiameter" name="wheelHoleDiameter" step="0.01" required>
+                        <label for="wheelHoleDiameterInterval">Step</label>
+                        <input type="number" class="inputItem2" id="wheelHoleDiameterInterval" name="wheelHoleDiameterInterval" min="0" step="0.01" oninput="if(this.value<0){this.value=0}">
+                        <label for="wheelHoleDiameterNum">Num</label>
+                        <input type="number" class="inputItem2" id="wheelHoleDiameterNum" name="wheelHoleDiameterNum" min="1" step="1" oninput="if(this.value<1){this.value=1}">
+                    </div>
+                    
+                    <div class="inputGroup">
+                        <label for="bowl">Bowl</label>
+                        <select class="inputItem" id="bowl" name="bowl" required>
+                            <option value="0">Bowl</option>
+                            <option value="0">Close</option>
+                            <option value="1">Open</option>
+                        </select>
+                    </div>
+<!--                     <select class="inputItem" name="type" placeholder="Type">
                         <option value="0" >Type</option>
                         <option value="0" >AD02</option>
                         <option value="1" >BYD HTH</option>
@@ -208,23 +272,26 @@
                         <option value="15" >T1X</option>
                         <option value="16" >T2X RHD</option>
                         <option value="17" >X03</option>
-                    </select>
+                    </select> -->
                     
-                    <select class="inputItem" name="mode" placeholder="Mode">
-z                        <option value="0" >Mode</option>
-                        <option value="0" >CVAF</option>
-                        <option value="1" >CVAR</option>
-                        <option value="2" >HDF</option>
-                        <option value="3" >HFF</option>
-                    </select>
+                    <div class="inputGroup">
+                        <label for="mode">Mode</label>
+                        <select class="inputItem" id="mode" name="mode" placeholder="Mode">
+                            <option value="0">Mode</option>
+                            <option value="0">CVAF</option>
+                            <option value="1">CVAR</option>
+                            <option value="2">HDF</option>
+                            <option value="3">HFF</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="right">
                     <div class="header">
-                        <input type="submit" class="btn" id="/" value="dBA">
+                        <input type="submit" class="btn" id="/" value="OASPL">
                         <input type="submit" class="dis_btn" id="/octave" value="Octave">
                         <input type="submit" class="btn" id="/3octave" value="1/3Octave">
-                        <input type="submit" class="dis_btn" id="/line" value="线谱">
+                        <input type="submit" class="dis_btn" id="/line" value="SPL">
                         <input type="submit" class="dis_btn" id="/noise" value="Noise">
                         <input type="submit" class="dis_btn" id="/harshness" value="Harshness">
                         <input type="submit" class="dis_btn" id="/vibration" value="Vibration">
@@ -274,30 +341,77 @@ z                        <option value="0" >Mode</option>
                     if (submitButtonId === '/3octave') {
                         var freqs = ['31.5', '40', '50', '63', '80', '100', '125', '160', '200', '250', 
                                    '315', '400', '500', '630', '800', '1000', '1250', '1600', '2000', 
-                                   '2500', '3150', '4000', '5000', '6300', '8000'];
+                                   '2500', '3150', '4000', '5000', '6300', '8000', '10000'];
                         
-                        var values = [];
-                        for (var i = 0; i < freqs.length; i++) {
-                            values.push(graph.data[0].y[i * 2 + 1]);
+                        var traces = [];
+                        for (var i = 0; i < graph.data.length; i++) {
+                            var values = [];
+                            for (var j = 0; j < freqs.length; j++) {
+                                values.push(graph.data[i].y[j * 2 + 1]);
+                            }
+                            
+                            traces.push({
+                                type: 'bar',
+                                x: Array.from({length: 26}, (_, i) => i),
+                                y: values,
+                                name: graph.data[i].name,
+                                width: 0.9,
+                                visible: (i === 0) ? true : 'legendonly',
+                                marker: {
+                                    color: (i === 0) ? 'rgb(0, 240, 0)' : 
+                                          [
+                                              'rgb(255, 99, 71)',
+                                              'rgb(30, 144, 255)',
+                                              'rgb(255, 69, 0)',
+                                              'rgb(148, 0, 211)',
+                                              'rgb(255, 140, 0)',
+                                              'rgb(75, 0, 130)',
+                                              'rgb(255, 0, 255)',
+                                              'rgb(70, 130, 180)',
+                                              'rgb(205, 92, 92)',
+                                              'rgb(0, 0, 139)'
+                                          ][i - 1],
+                                    opacity: (i === 0) ? 1 : 0.5
+                                }
+                            });
                         }
 
-                        var trace0 = {
-                            type: 'bar',
-                            x: Array.from({length: 25}, (_, i) => i),
-                            y: values,
-                            width: 0.9,
-                            marker: {
-                                color: 'rgb(0, 240, 0)'
-                            }
-                        };
+                        // var values = [];
+                        // for (var i = 0; i < freqs.length; i++) {
+                        //     values.push(graph.data[0].y[i * 2 + 1]);
+                        // }
 
-                        var data = [trace0];
+                        // var trace0 = {
+                        //     type: 'bar',
+                        //     x: Array.from({length: 25}, (_, i) => i),
+                        //     y: values,
+                        //     width: 0.65,
+                        //     marker: {
+                        //         color: 'rgb(0, 240, 0)'
+                        //     }
+                        // };
+
+                        // var trace1 = {
+                        //     type: 'bar',
+                        //     x: Array.from({length: 25}, (_, i) => i),
+                        //     y: [6.9636, 15.3571, 22.1208, 25.8765, 34.7718, 42.8021, 48.7501, 49.0357, 47.7614, 47.3544, 48.3968,
+                        //     50.1114, 53.3456, 59.1925, 56.8426, 58.7199, 58.4831, 56.9333, 57.9386, 57.5454, 56.2293, 54.7953, 51.8334,
+                        //     49.6149, 46.4313, 42.9096],
+                        //     width: 0.3,
+                        //     name: 'Reference',
+                        //     marker: {
+                        //         color: 'rgb(255, 51, 51)',
+                        //         opacity: 0.7
+                        //     }
+                        // };
+
+                        // var data = [trace0, trace1];
 
                         var layout = {
                             xaxis: {
                                 tickmode: 'array',
                                 ticktext: freqs,
-                                tickvals: Array.from({length: 25}, (_, i) => i),
+                                tickvals: Array.from({length: 26}, (_, i) => i),
                                 title: 'Frequency (Hz)',
                                 tickangle: 45,
                                 showgrid: true,
@@ -309,12 +423,19 @@ z                        <option value="0" >Mode</option>
                                 showgrid: true,
                                 gridwidth: 1,
                                 gridcolor: '#E5E5E5'
+                            },
+                            legend: {
+                                orientation: 'h',
+                                x: 0,
+                                y: -0.3
+                            },
+                            margin: {
+                                b: 100
                             }
                         };
 
-                        Plotly.newPlot('fig0', data, layout);
+                        Plotly.newPlot('fig0', traces, layout);
                     } else {
-
                         Plotly.newPlot('fig0', graph.data, graph.layout || {});
                     }
                 })
